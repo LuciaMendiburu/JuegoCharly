@@ -46,6 +46,8 @@ caja.setPosition(0+ancho*3,height-alto);
 mundo.add(caja);
 caja.attachImage(lata);
 caja.setRestitution(0.8);
+caja.setFriction(3);
+caja.setDensity(3);
 
 /* pileta donde charly se va a sentar*/
 
@@ -62,6 +64,8 @@ mundo.add(pileta);
 pileta.attachImage(bordePileta);
 pileta.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 //como hago para que no pueda moverse al objeto con el mouse?
+pileta.setGrabbable(false);
+
 
 /* botella */
 
@@ -74,6 +78,8 @@ botella.setPosition(0+ancho*3.5,height-altoBotella);
 mundo.add(botella);
 botella.attachImage(botellaCoca);
 botella.setRestitution(0.1);
+botella.setFriction(6);
+botella.setDensity(6);
 
 /*Charly*/
 
@@ -90,7 +96,7 @@ mundo.add(Charly);
 Charly.attachImage(Charlyimg);
 Charly.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 //como hago para que no pueda moverse al objeto con el mouse?
-
+Charly.setGrabbable(false);
 
 
 }
