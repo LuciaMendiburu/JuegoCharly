@@ -8,6 +8,8 @@ float ancho = 36.5;
 float altoBotella = 94;
 float alto = 64;
 
+int contador = 0;
+
 int anchoPileta =301;
 int altoPileta =350;
 
@@ -22,6 +24,8 @@ PImage botellaCoca;
 
 PImage Charlyimg;
 
+PImage agua;
+
 void setup(){
 
 size(1000,600);
@@ -33,7 +37,7 @@ mundo = new FWorld(); //creo el mundo
 mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mundo
 //los bordes no se ven porque para actualizarse necesira llamar
 //a dos metodos en el draw
-
+ agua = loadImage("agua.png");
 
 /* caja > futura lata */
 
@@ -107,9 +111,13 @@ Charly.setName("Charly");
 
 void draw(){
   background(255);
+  image(agua,0,0);
   mundo.step();//hace los calculos matematicos en los cuerpos que interactuan en 
   //frame
   mundo.draw(); //dibuja el mundo de fisica en el lugar
+  textSize(36);
+  fill(0);
+  text(contador,50,50);
   
  /* if(<altoPileta){
 
@@ -129,11 +137,13 @@ FBody body2 =contacto.getBody2();
 
 
 
-if (body1.getName() != null && body2.getName() != null){
+if (body1.getName() == "Charly" || body2.getName() == "Charly"){
 
-println("body1= " + body1.getName());
-println("body2= " + body2.getName());
+//println("body1= " + body1.getName());
+//println("body2= " + body2.getName());
 
+contador = contador + 1;
+println(contador);
 
 }
 
