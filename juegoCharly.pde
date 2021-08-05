@@ -8,6 +8,8 @@ float ancho = 36.5;
 float altoBotella = 94;
 float alto = 64;
 
+int contador = 0;
+
 int anchoPileta =301;
 int altoPileta =350;
 
@@ -22,6 +24,8 @@ PImage botellaCoca;
 
 PImage Charlyimg;
 
+PImage agua;
+
 void setup(){
 
 size(1000,600);
@@ -33,7 +37,7 @@ mundo = new FWorld(); //creo el mundo
 mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mundo
 //los bordes no se ven porque para actualizarse necesira llamar
 //a dos metodos en el draw
-
+ agua = loadImage("agua.png");
 
 /* caja > futura lata */
 
@@ -46,6 +50,9 @@ caja.setPosition(0+ancho*3,height-alto);
 mundo.add(caja);
 caja.attachImage(lata);
 caja.setRestitution(0.8);
+caja.setFriction(3);
+caja.setDensity(3);
+caja.setName("lataCoca");
 
 /* pileta donde charly se va a sentar*/
 
@@ -62,18 +69,23 @@ mundo.add(pileta);
 pileta.attachImage(bordePileta);
 pileta.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 //como hago para que no pueda moverse al objeto con el mouse?
+pileta.setGrabbable(false);
+
 
 /* botella */
 
 botellaCoca = loadImage("botella.png");
 
 botella = new FBox(ancho,altoBotella);
+botella.setName("botellaCoca");
 botella.setPosition(0+ancho*3.5,height-altoBotella);
 //que la incialice aca no significa que se dibuje porque no
 //agrege la caja al mundo 
 mundo.add(botella);
 botella.attachImage(botellaCoca);
 botella.setRestitution(0.1);
+botella.setFriction(6);
+botella.setDensity(6);
 
 /*Charly*/
 
@@ -90,7 +102,8 @@ mundo.add(Charly);
 Charly.attachImage(Charlyimg);
 Charly.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 //como hago para que no pueda moverse al objeto con el mouse?
-
+Charly.setGrabbable(false);
+Charly.setName("Charly");
 
 
 }
@@ -98,10 +111,40 @@ Charly.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 
 void draw(){
   background(255);
+  image(agua,0,0);
   mundo.step();//hace los calculos matematicos en los cuerpos que interactuan en 
   //frame
   mundo.draw(); //dibuja el mundo de fisica en el lugar
+  textSize(36);
+  fill(0);
+  text(contador,50,50);
+  
+ /* if(<altoPileta){
+
+mundo.setGravity(0,0);
+
+} */
   
   
-  
+}
+
+void contactStarted(FContact contacto){
+
+//nunca se cual es el uno y cual es el dos, por lo tanto puedo averiguar 
+//los nombres de los objetos
+FBody body1 = contacto.getBody1();
+FBody body2 =contacto.getBody2();
+
+
+
+if (body1.getName() == "Charly" || body2.getName() == "Charly"){
+
+//println("body1= " + body1.getName());
+//println("body2= " + body2.getName());
+
+contador ++;
+println(contador);
+
+}
+
 }
