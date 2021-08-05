@@ -48,6 +48,7 @@ caja.attachImage(lata);
 caja.setRestitution(0.8);
 caja.setFriction(3);
 caja.setDensity(3);
+caja.setName("lataCoca");
 
 /* pileta donde charly se va a sentar*/
 
@@ -72,6 +73,7 @@ pileta.setGrabbable(false);
 botellaCoca = loadImage("botella.png");
 
 botella = new FBox(ancho,altoBotella);
+botella.setName("botellaCoca");
 botella.setPosition(0+ancho*3.5,height-altoBotella);
 //que la incialice aca no significa que se dibuje porque no
 //agrege la caja al mundo 
@@ -97,6 +99,7 @@ Charly.attachImage(Charlyimg);
 Charly.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 //como hago para que no pueda moverse al objeto con el mouse?
 Charly.setGrabbable(false);
+Charly.setName("Charly");
 
 
 }
@@ -108,6 +111,30 @@ void draw(){
   //frame
   mundo.draw(); //dibuja el mundo de fisica en el lugar
   
+ /* if(<altoPileta){
+
+mundo.setGravity(0,0);
+
+} */
   
   
+}
+
+void contactStarted(FContact contacto){
+
+//nunca se cual es el uno y cual es el dos, por lo tanto puedo averiguar 
+//los nombres de los objetos
+FBody body1 = contacto.getBody1();
+FBody body2 =contacto.getBody2();
+
+
+
+if (body1.getName() != null && body2.getName() != null){
+
+println("body1= " + body1.getName());
+println("body2= " + body2.getName());
+
+
+}
+
 }
