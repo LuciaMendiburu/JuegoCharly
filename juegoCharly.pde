@@ -142,7 +142,7 @@ if (body1.getName() == "Charly" || body2.getName() == "Charly"){
 //println("body1= " + body1.getName());
 //println("body2= " + body2.getName());
 
-contador = contador + 1;
+contador ++;
 println(contador);
 
 }
