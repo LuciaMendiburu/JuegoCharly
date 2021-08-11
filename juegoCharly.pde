@@ -148,3 +148,13 @@ println(contador);
 }
 
 }
+void keyPressed()
+{
+  if (key == ENTER){
+    botella.addImpulse(1000,-10000);
+    caja.addImpulse(1000,-10000);
+//    background(55);
+  
+ }
+
+}
