@@ -4,6 +4,9 @@ FBox caja; //creamos una caja
 FBox pileta;//creamos el borde de la pileta donde charly va a estar sentado
 FBox botella;
 FBox Charly;
+FBox Brazo;
+FCircle Mano;
+
 float ancho = 36.5;
 float altoBotella = 94;
 float alto = 64;
@@ -15,6 +18,12 @@ int altoPileta =350;
 
 float anchoCharly = 74;
 float altoCharly = 175 ;
+
+int anchoBrazo =100;
+int altoBrazo =10;
+
+int anchoMano =40;
+int altoMano =40;
 
 PImage lata;
 
@@ -122,6 +131,25 @@ Charly.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 Charly.setGrabbable(false);
 Charly.setName("Charly");
 
+
+Brazo = new FBox(anchoBrazo,altoBrazo);
+Brazo.setPosition(685,140);
+mundo.add(Brazo);
+Brazo.setGrabbable(false);
+Brazo.setRotation(180);
+Brazo.setName("Brazo");
+Brazo.setStatic(true);
+
+Mano = new FCircle(30); 
+Mano.setStatic(true);
+Mano.setPosition(656,99);
+mundo.add(Mano);
+Mano.setGrabbable(false);
+Mano.setName("Mano");
+
+
+
+
 //estos son los circulitos que unen todas las lineas con los hilos
   
   
@@ -213,6 +241,8 @@ Charly.setName("Charly");
 
 
 void draw(){
+  
+  println("X: " + mouseX + "Y:" + mouseY);
   background(255);
   image(agua,0,0);
   mundo.step();//hace los calculos matematicos en los cuerpos que interactuan en 
@@ -240,7 +270,7 @@ FBody body2 =contacto.getBody2();
 
 
 
-if (body1.getName() == "Charly" || body2.getName() == "Charly"){
+if (body1.getName() == "Mano" || body2.getName() == "Mano"){
 
 //println("body1= " + body1.getName());
 //println("body2= " + body2.getName());
