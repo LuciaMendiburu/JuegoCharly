@@ -26,13 +26,30 @@ PImage Charlyimg;
 
 PImage agua;
 
+
+/*-----------------------elementos cadena agua-------------------------------------*/
+
+float frequency = 5;
+float damping = 1;
+float puenteY;
+//si se modifica la cantidad de cuerpos que cuelguen de la soga, va a haber mas o menos
+//peso que tire hacia abajo, que puede jugar a favor o en contra si queremos poner cosas arriba
+FBody[] steps = new FBody[20];
+FWorld world;
+
+int boxWidth = 400/(steps.length) - 2;
+
+
+
 void setup(){
+  
 
 size(1000,600);
 
 /* inicializacion */
 
 Fisica.init(this);
+puenteY = altoPileta+45;
 mundo = new FWorld(); //creo el mundo
 mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mundo
 //los bordes no se ven porque para actualizarse necesira llamar
@@ -104,6 +121,92 @@ Charly.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 //como hago para que no pueda moverse al objeto con el mouse?
 Charly.setGrabbable(false);
 Charly.setName("Charly");
+
+//estos son los circulitos que unen todas las lineas con los hilos
+  
+  
+  FCircle left = new FCircle(10);
+  left.setStatic(true);
+  left.setPosition(0, puenteY);
+  left.setDrawable(false);
+
+  mundo.add(left);
+
+  FCircle right = new FCircle(10);
+  right.setStatic(true);
+  right.setPosition(width-anchoPileta, puenteY);
+  right.setDrawable(false);
+ 
+  mundo.add(right);
+  
+  
+    
+  /*-------------------------------------------------*/
+  
+  
+  
+  for (int i=0; i<steps.length; i++) {
+    steps[i] = new FBox(boxWidth, 10);
+    steps[i].setPosition(map(i, 0, steps.length-1, boxWidth, width-boxWidth), puenteY);
+    steps[i].setNoStroke();
+    steps[i].setNoFill();
+    mundo.add(steps[i]);
+  }
+
+  for (int i=1; i<steps.length; i++) {
+    
+    //construye la union entre los cuerpos del medio
+    
+    FDistanceJoint junta = new FDistanceJoint(steps[i-1], steps[i]);
+    //junta.setAnchor1(1, 0);
+    //junta.setAnchor2(-1, 0);
+   // junta.setFrequency(frequency);
+   // junta.setDamping(damping);
+    junta.setNoStroke();
+    junta.setNoFill();
+    junta.setLength(0.2);
+    mundo.add(junta);
+  }
+  
+  
+  //constituye la distancia de la soga de la izquierda y el primer cuerpo
+  
+   FDistanceJoint juntaPrincipio = new FDistanceJoint(steps[0], left);
+  //juntaPrincipio.setAnchor1(-boxWidth/2, 0);
+  //juntaPrincipio.setAnchor2(0, 0);
+  juntaPrincipio.setFrequency(frequency);
+  //juntaPrincipio.setDamping(damping);
+  juntaPrincipio.setLength(0.2);
+  juntaPrincipio.setNoFill();
+  juntaPrincipio.setNoStroke(); 
+ mundo.add(juntaPrincipio);
+
+
+//constituye la distancia de la soga de la derecha y el primer cuerpo
+
+  FDistanceJoint juntaFinal = new FDistanceJoint(steps[steps.length-1], right);
+  
+   juntaFinal.setLength(30);
+   
+  
+  //juntaFinal.setAnchor1(boxWidth/2, 0);
+  //juntaFinal.setAnchor2(0, 0);
+ // juntaFinal.setFrequency(frequency);
+  //juntaFinal.setDamping(damping);
+  juntaFinal.setLength(1);
+  //juntaFinal.calculateLength();
+
+ juntaFinal.setNoFill();
+  juntaFinal.setNoStroke();
+  mundo.add(juntaFinal);
+  
+
+
+
+
+
+
+
 
 
 }
