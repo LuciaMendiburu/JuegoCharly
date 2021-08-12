@@ -280,4 +280,25 @@ println(contador);
 
 }
 
+
+FBody coca = null;
+  if (contacto.getBody1() == Mano) {
+    coca = contacto.getBody2();
+  } else if (contacto.getBody2() == Mano) {
+    coca = contacto.getBody1();
+  }
+  
+  if (coca == null) {
+    return;
+  }
+  
+  //desaparece la coca
+    mundo.remove(coca);
+  //la vuelve a agregar al mundo
+    mundo.add(coca);
+
+
+
+
+
 }
