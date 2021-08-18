@@ -18,8 +18,8 @@ int contador = 0;
 int anchoPileta =301;
 int altoPileta =350;
 
-float anchoCharly = 74;
-float altoCharly = 175 ;
+float anchoCharly = 70;
+float altoCharly = 145 ;
 
 PImage lata;
 
@@ -31,9 +31,17 @@ PImage Charlyimg;
 
 PImage agua;
 
+int maxPngAgua = 10;
+int maxPngCharly = 6;
+int imageIndex = 0;
+PImage [] PngAgua = new PImage[maxPngAgua];
+PImage [] PngCharly = new PImage[maxPngCharly];
+
+
 void setup(){
 
 size(1000,600);
+frameRate(10);
 
 /* inicializacion */
 
@@ -42,8 +50,14 @@ mundo = new FWorld(); //creo el mundo
 mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mundo
 //los bordes no se ven porque para actualizarse necesira llamar
 //a dos metodos en el draw
- agua = loadImage("agua.png");
+// agua = loadImage("agua.png");
  
+ /* Loop agua */
+for (int i = 0; i< PngAgua.length; i++){
+PngAgua[i] = loadImage("Layer 1_agua_0"+i+".png");
+}
+
+
 /* sonido */
 abrirBotella = new SoundFile(this,"abriendo_botella.wav");
 abrirLata = new SoundFile(this,"abriendo_lata.wav");
@@ -67,6 +81,7 @@ caja.setName("lataCoca");
 
 
 bordePileta = loadImage("piletaBorde.png");
+
 
 pileta = new FBox(anchoPileta,altoPileta);
 pileta.setPosition(width-anchoPileta/2, height - altoPileta/2 ); 
@@ -99,8 +114,12 @@ botella.addImpulse(50, 50);
 
 /*Charly*/
 
+ /* Loop charly */
+for (int i = 0; i< PngCharly.length; i++){
+PngCharly[i] = loadImage("charly_"+i+".png");
+}
 
-Charlyimg = loadImage("Charly.png");
+//Charlyimg = loadImage("Charly.png");
 
 Charly = new FBox(anchoCharly,altoCharly);
 Charly.setPosition(width-(anchoPileta/2 + anchoCharly + anchoCharly/2) , height - (altoPileta/2+ altoCharly + altoCharly/2) ); 
@@ -121,13 +140,20 @@ Charly.setName("Charly");
 
 void draw(){
   background(255);
-  image(agua,0,0);
+  //image(agua,0,0);
+  image(PngAgua[imageIndex],0,0);
+  imageIndex=(imageIndex+1)%PngAgua.length;
+  
+
   mundo.step();//hace los calculos matematicos en los cuerpos que interactuan en 
   //frame
   mundo.draw(); //dibuja el mundo de fisica en el lugar
+
   textSize(36);
   fill(0);
   text(contador,50,50);
+    image(PngCharly[imageIndex],400,20);
+  imageIndex=(imageIndex+1)%PngCharly.length;
   
  /* if(<altoPileta){
 
