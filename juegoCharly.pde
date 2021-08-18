@@ -10,8 +10,8 @@ FBox Charly;
 FBox Brazo;
 FCircle Mano;
 
-int startTime;
-int espera;
+float espera;
+float timeLeft = 3000;
 
 SoundFile abrirLata;
 SoundFile abrirBotella;
@@ -98,8 +98,7 @@ mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mun
 //a dos metodos en el draw
  agua = loadImage("agua.png");
  
- startTime = millis();
- espera = millis();
+ espera = second();
   
   /* Loop agua */
 for (int i = 0; i< PngAgua.length; i++){
@@ -316,7 +315,8 @@ Ganaste = loadImage("3.png");
 
 
 void draw(){
-  println("X: " + mouseX + " Y:" + mouseY);
+ // println("X: " + mouseX + " Y:" + mouseY);
+// println(startTime);
   
   
     
@@ -342,12 +342,15 @@ void draw(){
   textSize(36);
   fill(0);
   text(contador,50,50);
-  text(startTime/1000,width-50,50); /*------------------ TEXTO DE TIEMPO SIN FUNCIONAR -----------------------*/
+  text(round(timeLeft/100),width-50,50); /*------------------ TEXTO DE TIEMPO SIN FUNCIONAR -----------------------*/
   //PngCharly[imageIndex].resize(400,100);
   image(PngCharly[imageIndex],635,20);
   imageIndex=(imageIndex+1)%PngCharly.length;
-  if (millis() - startTime > 30000){
+  timeLeft--;
+  println(timeLeft/100);
+  if (timeLeft == 0 && pantalla == 1){
     println("LISTOOOOO");
+    pantalla = 2;
     } 
     
   }else if(pantalla==2){
@@ -466,13 +469,12 @@ FBody coca = null;
 void keyPressed(){
   if (key == 's' || key == 'S'){  
    pantalla =1;
- }else if (millis() - espera > 500){
+ }else if (second() - espera > 0.5){
    if(key == ENTER)
       botella.addImpulse(3000,-10000);
     caja.addImpulse(3000,-10000);
-    println(millis());
     espera = 0;
-    espera = millis();
+    espera = second();
     } 
  }
  
