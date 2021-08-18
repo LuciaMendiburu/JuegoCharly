@@ -1,4 +1,9 @@
 import fisica.*;
+import processing.sound.*;
+
+SoundFile abrirLata;
+SoundFile abrirBotella;
+
 FWorld mundo;
 FBox caja; //creamos una caja
 FBox pileta;//creamos el borde de la pileta donde charly va a estar sentado
@@ -38,6 +43,10 @@ mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mun
 //los bordes no se ven porque para actualizarse necesira llamar
 //a dos metodos en el draw
  agua = loadImage("agua.png");
+ 
+/* sonido */
+abrirBotella = new SoundFile(this,"abriendo_botella.wav");
+abrirLata = new SoundFile(this,"abriendo_lata.wav");
 
 /* caja > futura lata */
 
@@ -86,6 +95,7 @@ botella.attachImage(botellaCoca);
 botella.setRestitution(0.1);
 botella.setFriction(6);
 botella.setDensity(6);
+botella.addImpulse(50, 50);
 
 /*Charly*/
 
@@ -141,19 +151,21 @@ if (body1.getName() == "Charly" || body2.getName() == "Charly"){
 
 //println("body1= " + body1.getName());
 //println("body2= " + body2.getName());
+if (!abrirBotella.isPlaying()){
+abrirBotella.play();
+}
 
 contador ++;
 println(contador);
-
 }
 
 }
 void keyPressed()
 {
   if (key == ENTER){
-    botella.addImpulse(1000,-10000);
-    caja.addImpulse(1000,-10000);
-//    background(55);
+    botella.addImpulse(5000,-10000);
+    caja.addImpulse(5000,-10000);
+    background(55);
   
  }
 
