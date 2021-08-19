@@ -2,6 +2,8 @@
 import fisica.*;
 import processing.sound.*;
 
+PFont pixel_font;
+
 FWorld mundo;
 FBox caja; //creamos una caja
 FBox pileta;//creamos el borde de la pileta donde charly va a estar sentado
@@ -15,6 +17,8 @@ float timeLeft = 3000;
 
 SoundFile abrirLata;
 SoundFile abrirBotella;
+SoundFile perdiste;
+SoundFile ganaste;
 
 float ancho = 36.5;
 float altoBotella = 94;
@@ -62,6 +66,8 @@ PImage dinosaurioInflable;
 PImage Inicio;
 PImage Perdiste;
 PImage Ganaste;
+PImage Boton;
+PImage Flecha;
 
 
 /*-----------------------elementos cadena agua-------------------------------------*/
@@ -98,6 +104,11 @@ mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mun
 //a dos metodos en el draw
  agua = loadImage("agua.png");
  
+ dinosaurioInflable = loadImage("dinosaurioInflable.png");
+ 
+  pixel_font = createFont("FreePixel.ttf", 128);
+ textFont(pixel_font);
+ 
  espera = second();
   
   /* Loop agua */
@@ -109,6 +120,8 @@ PngAgua[i] = loadImage("Layer 1_agua_0"+i+".png");
  /* sonido */
 abrirBotella = new SoundFile(this,"abriendo_botella.wav");
 abrirLata = new SoundFile(this,"abriendo_lata.wav");
+perdiste = new SoundFile(this,"perder.wav");
+ganaste = new SoundFile(this,"ganar.wav");
 
 /* caja > futura lata */
 
@@ -300,15 +313,13 @@ Mano.setName("Mano");
 
 
 Fondo = loadImage("Fondo.png");
-       
-dinosaurioInflable = loadImage("dinosaurioInflable.png");
 
 Inicio = loadImage("1.png");
 Perdiste = loadImage("2.png");
 Ganaste = loadImage("3.png");
+ Boton = loadImage("4.png");
 
-
-
+Flecha= loadImage("flecha.png");
 
 
 }
@@ -323,6 +334,15 @@ void draw(){
   if(pantalla == 0){
     
      image(Inicio,0,0);
+     
+       
+     if(mouseX>870 && mouseX<929 && mouseY>468 && mouseY<523){
+            
+           image(Flecha,0,0);
+          
+           } 
+     
+     
      fill(0);
      textSize(20);
      textAlign(CENTER);
@@ -350,12 +370,38 @@ void draw(){
   println(timeLeft/100);
   if (timeLeft == 0 && pantalla == 1){
     println("LISTOOOOO");
-    pantalla = 2;
+    pantalla = 3;
+     if (!perdiste.isPlaying()){
+perdiste.play();
+ timeLeft = 3000;
+}
     } 
     
+  }else if(pantalla==3){
+            
+    image(Perdiste,0,0);
+    
+       if(mouseX>214 && mouseX<550 && mouseY>385 && mouseY<440){
+            
+           image(Boton,0,0);
+        
+           }   
+    
+    
   }else if(pantalla==2){
-  
+        
+     image(Ganaste,0,0);
+     contador = 0;
+       if(mouseX>214 && mouseX<550 && mouseY>385 && mouseY<440){
+            
+          image(Boton,0,0);
+           
+          
+           }  
+    
+    
   }
+  
   
 
 
@@ -437,7 +483,11 @@ println(contador);
 
 
 }
-if (contador == 3){
+if (contador == 1){
+  timeLeft = 3000;
+      if (!ganaste.isPlaying()){
+ganaste.play();
+}
 pantalla = 2;
 }
 
@@ -467,16 +517,69 @@ FBody coca = null;
 
 
 void keyPressed(){
-  if (key == 's' || key == 'S'){  
-   pantalla =1;
- }else if (second() - espera > 0.5){
+  
+  
+  if(pantalla==1){
+   if (second() - espera > 0.2){
    if(key == ENTER)
       botella.addImpulse(3000,-10000);
     caja.addImpulse(3000,-10000);
     espera = 0;
     espera = second();
     } 
+  }
+    
+    
  }
+ 
+ 
+  
+ void mouseClicked(){
+ 
+ 
+  if(pantalla==2){
+      
+      //ganaste
+        
+            if(mouseX>214 && mouseX<550 && mouseY>385 && mouseY<440){
+            
+            pantalla=0;
+           
+            
+            }   
+    
+    }else if(pantalla==3){
+    
+    //perdiste
+    
+           if(mouseX>214 && mouseX<550 && mouseY>385 && mouseY<440){
+            
+           pantalla=0;
+          
+           }   
+    
+    
+    }else if(pantalla==0){
+    
+    //inicio
+    
+            
+     if(mouseX>870 && mouseX<929 && mouseY>468 && mouseY<523){
+            
+           pantalla=1;
+          
+           }    
+    
+    
+    }
+ 
+ 
+ 
+ 
+ 
+ 
+ }
+ 
  
  
   
