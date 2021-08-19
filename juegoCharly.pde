@@ -2,6 +2,8 @@
 import fisica.*;
 import processing.sound.*;
 
+PFont pixel_font;
+
 FWorld mundo;
 FBox caja; //creamos una caja
 FBox pileta;//creamos el borde de la pileta donde charly va a estar sentado
@@ -15,6 +17,8 @@ float timeLeft = 3000;
 
 SoundFile abrirLata;
 SoundFile abrirBotella;
+SoundFile perdiste;
+SoundFile ganaste;
 
 float ancho = 36.5;
 float altoBotella = 94;
@@ -100,6 +104,11 @@ mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mun
 //a dos metodos en el draw
  agua = loadImage("agua.png");
  
+ dinosaurioInflable = loadImage("dinosaurioInflable.png");
+ 
+  pixel_font = createFont("FreePixel.ttf", 128);
+ textFont(pixel_font);
+ 
  espera = second();
   
   /* Loop agua */
@@ -111,6 +120,8 @@ PngAgua[i] = loadImage("Layer 1_agua_0"+i+".png");
  /* sonido */
 abrirBotella = new SoundFile(this,"abriendo_botella.wav");
 abrirLata = new SoundFile(this,"abriendo_lata.wav");
+perdiste = new SoundFile(this,"perder.wav");
+ganaste = new SoundFile(this,"ganar.wav");
 
 /* caja > futura lata */
 
@@ -302,8 +313,6 @@ Mano.setName("Mano");
 
 
 Fondo = loadImage("Fondo.png");
-       
-dinosaurioInflable = loadImage("dinosaurioInflable.png");
 
 Inicio = loadImage("1.png");
 Perdiste = loadImage("2.png");
@@ -337,7 +346,7 @@ void draw(){
      fill(0);
      textSize(20);
      textAlign(CENTER);
-     text("Pulsa s para iniciar", width/2, 50);
+//     text("Pulsa s para iniciar", width/2, 50);
     
     
   }else if(pantalla==1){
@@ -345,15 +354,30 @@ void draw(){
   image(Fondo,0,0);
     
   //image(agua,0,0);
-  image(PngAgua[imageIndex],0,0);
-  imageIndex=(imageIndex+1)%PngAgua.length;
+  
   mundo.step();//hace los calculos matematicos en los cuerpos que interactuan en 
   //frame
   mundo.draw(); //dibuja el mundo de fisica en el lugar
+  
+  image(PngAgua[imageIndex],0,0);
+  imageIndex=(imageIndex+1)%PngAgua.length;
+  
   textSize(36);
+  fill(255,255,0);
+  noStroke();
+  ellipse(50,50,50,50);
+  textSize(25);
+  text("puntos",50,100);
   fill(0);
-  text(contador,50,50);
-  text(round(timeLeft/100),width-50,50); /*------------------ TEXTO DE TIEMPO SIN FUNCIONAR -----------------------*/
+   textSize(36);
+  text(contador,50,60);
+  textSize(25);
+  fill(255,0,0);
+  text("Tiempo: "+round(timeLeft/100),width-150,50); /*------------------ TEXTO DE TIEMPO SIN FUNCIONAR -----------------------*/
+  fill(255);
+  textSize(30);
+  text("Dale a Charly su gaseosa", width/2, 40);
+  text("¡Sólo tenés 30 segundos!", width/2, 70);
   //PngCharly[imageIndex].resize(400,100);
   image(PngCharly[imageIndex],635,20);
   imageIndex=(imageIndex+1)%PngCharly.length;
@@ -361,12 +385,15 @@ void draw(){
   println(timeLeft/100);
   if (timeLeft == 0 && pantalla == 1){
     println("LISTOOOOO");
-    pantalla = 2;
+    pantalla = 3;
+     if (!perdiste.isPlaying()){
+perdiste.play();
+ timeLeft = 3000;
+
+}
     } 
     
   }else if(pantalla==3){
-  
-   
             
     image(Perdiste,0,0);
     
@@ -378,11 +405,9 @@ void draw(){
     
     
   }else if(pantalla==2){
-    
-    
-    
+        
      image(Ganaste,0,0);
-     
+     contador = 0;
        if(mouseX>214 && mouseX<550 && mouseY>385 && mouseY<440){
             
           image(Boton,0,0);
@@ -474,7 +499,11 @@ println(contador);
 
 
 }
-if (contador == 3){
+if (contador == 1){
+  timeLeft = 3000;
+      if (!ganaste.isPlaying()){
+ganaste.play();
+}
 pantalla = 2;
 }
 
@@ -507,16 +536,14 @@ void keyPressed(){
   
   
   if(pantalla==1){
- // if (second() - espera > 0.5){
+   //if (second() - espera > 0.2){
    if(key == ENTER)
-      botella.addImpulse(3000,-10000);
+      botella.addImpulse(5000,-10000);
     caja.addImpulse(3000,-10000);
     espera = 0;
     espera = second();
-    //} 
-    
-    
-  }
+    } 
+ // }
     
     
  }
@@ -568,7 +595,6 @@ void keyPressed(){
  
  
  }
- 
  
  
   
