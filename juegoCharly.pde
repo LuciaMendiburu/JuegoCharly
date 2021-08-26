@@ -112,9 +112,9 @@ mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mun
  espera = second();
   
   /* Loop agua */
-for (int i = 0; i< PngAgua.length; i++){
-PngAgua[i] = loadImage("Layer 1_agua_0"+i+".png");
-}
+
+PngAgua[1] = loadImage("Layer 1_agua_01.png");
+
 
  
  /* sonido */
@@ -174,9 +174,9 @@ botella.setDensity(6);
 /*Charly*/
 
  /* Loop charly */
-for (int i = 0; i< PngCharly.length; i++){
-PngCharly[i] = loadImage("charly_"+i+".png");
-}
+
+PngCharly[1] = loadImage("charly_1.png");
+
 
 //Charlyimg = loadImage("Charly.png");
 
@@ -359,7 +359,7 @@ void draw(){
   //frame
   mundo.draw(); //dibuja el mundo de fisica en el lugar
   
-  image(PngAgua[imageIndex],0,0);
+  image(PngAgua[1],0,0);
   imageIndex=(imageIndex+1)%PngAgua.length;
   
   textSize(36);
@@ -379,12 +379,11 @@ void draw(){
   text("Dale a Charly su gaseosa", width/2, 40);
   text("¡Sólo tenés 30 segundos!", width/2, 70);
   //PngCharly[imageIndex].resize(400,100);
-  image(PngCharly[imageIndex],635,20);
+  image(PngCharly[1],635,20);
   imageIndex=(imageIndex+1)%PngCharly.length;
   timeLeft--;
-  println(timeLeft/100);
+ // println(timeLeft/100);
   if (timeLeft == 0 && pantalla == 1){
-    println("LISTOOOOO");
     pantalla = 3;
      if (!perdiste.isPlaying()){
 perdiste.play();
@@ -448,8 +447,8 @@ densidadB = 2;
 
 }else{
      
-friccionB =3;
-densidadB = 3;
+friccionB =30;
+densidadB = 6;
  DampingB = 0 ;
 
   
@@ -459,14 +458,14 @@ densidadB = 3;
    
    
 friccionL = 30;
-densidadL = 5;
+densidadL = 3;
  DampingL = 5;
 
 
 }else{
      
 friccionL =3;
-densidadL = 3;
+densidadL = 5;
  DampingL = 0;
 
   
@@ -533,19 +532,21 @@ FBody coca = null;
 
 
 void keyPressed(){
-  
+ 
   
   if(pantalla==1){
-   //if (second() - espera > 0.2){
+   if (millis() - espera >= 1000){
+    // println(contador);
    if(key == ENTER)
       botella.addImpulse(5000,-10000);
     caja.addImpulse(3000,-10000);
     espera = 0;
-    espera = second();
-    } 
- // }
-    
-    
+    espera = millis();
+
+    } else {
+    println("STOP");
+    }
+  }    
  }
  
  
