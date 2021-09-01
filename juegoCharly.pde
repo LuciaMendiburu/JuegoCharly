@@ -1,4 +1,3 @@
-
 import fisica.*;
 import processing.sound.*;
 
@@ -82,7 +81,7 @@ FWorld world;
 
 int boxWidth = 400/(steps.length) - 2;
 
-int maxPngAgua = 10;
+int maxPngAgua = 47;
 int maxPngCharly = 6;
 int imageIndex = 0;
 PImage [] PngAgua = new PImage[maxPngAgua];
@@ -113,7 +112,10 @@ mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mun
   
   /* Loop agua */
 
-PngAgua[1] = loadImage("Layer 1_agua_01.png");
+for (int i = 0; i< PngAgua.length; i++){
+  println(i);
+PngAgua[i] = loadImage("Layer 1_agua_"+i+".png");
+}
 
 
  
@@ -359,7 +361,9 @@ void draw(){
   //frame
   mundo.draw(); //dibuja el mundo de fisica en el lugar
   
-  image(PngAgua[1],0,0);
+  PngAgua[imageIndex].resize(1000,600);
+   image(PngAgua[imageIndex],0,120);
+   //println("index agua: "+ imageIndex);
   imageIndex=(imageIndex+1)%PngAgua.length;
   
   textSize(36);
@@ -596,8 +600,5 @@ void keyPressed(){
  
  
  }
- 
- 
-  
- 
+
  
