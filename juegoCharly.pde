@@ -494,7 +494,7 @@ FBody body2 =contacto.getBody2();
 
 
 
-if (body1.getName() == "Mano" || body2.getName() == "Mano"){
+if ((body1.getName() == "Mano" && body1.getName() == "botellaCoca") || body2.getName() == "Mano"){
 
 //println("body1= " + body1.getName());
 //println("body2= " + body2.getName());
