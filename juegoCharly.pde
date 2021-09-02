@@ -19,6 +19,7 @@ SoundFile abrirLata;
 SoundFile abrirBotella;
 SoundFile perdiste;
 SoundFile ganaste;
+SoundFile estoyVerde;
 
 float ancho = 36.5;
 float altoBotella = 94;
@@ -129,6 +130,7 @@ abrirBotella = new SoundFile(this,"abriendo_botella.wav");
 abrirLata = new SoundFile(this,"abriendo_lata.wav");
 perdiste = new SoundFile(this,"perder.wav");
 ganaste = new SoundFile(this,"ganar.wav");
+estoyVerde = new SoundFile(this,"estoy_verde_8bits.wav");
 
 /* caja > futura lata */
 
@@ -143,7 +145,7 @@ caja.attachImage(lata);
 caja.setRestitution(0.8);
 caja.setFriction(3);
 caja.setDensity(3);
-caja.setName("lataCoca");
+caja.setName("botellaCoca");
 
 /* pileta donde charly se va a sentar*/
 
@@ -341,10 +343,13 @@ void draw(){
 // println(startTime);
     
   if(pantalla == 0){
-    
      image(Inicio,0,0);
      restart();
-       
+     
+     if (!estoyVerde.isPlaying()){
+estoyVerde.amp(.5);
+estoyVerde.play();
+     }       
      if(mouseX>870 && mouseX<929 && mouseY>468 && mouseY<523){
             
            image(Flecha,0,0);
@@ -372,18 +377,19 @@ void draw(){
    //println("index agua: "+ imageIndex);
   imageIndex=(imageIndex+1)%PngAgua.length;
   
-  textSize(36);
-  fill(255,255,0);
-  noStroke();
-  ellipse(50,50,50,50);
+  //textSize(36);
+  //fill(255,255,0);
+ // noStroke();
+  //ellipse(50,50,50,50);
   textSize(25);
-  text("puntos",50,100);
+  fill(255);
+  text("Tiempo: "+round(timeLeft/100),100,50);
   fill(0);
    textSize(36);
-  text(contador,50,60);
-  textSize(25);
-  fill(255,0,0);
-  text("Tiempo: "+round(timeLeft/100),width-150,50); /*------------------ TEXTO DE TIEMPO SIN FUNCIONAR -----------------------*/
+ // text(contador,50,60);
+ //textSize(25);
+ //fill(255,0,0);
+ //text("Tiempo: "+round(timeLeft/100),width-150,50);
   fill(255);
   textSize(30);
   text("Dale a Charly su gaseosa", width/2, 40);
@@ -396,7 +402,9 @@ void draw(){
   if (timeLeft == 0 && pantalla == 1){
     pantalla = 3;
      if (!perdiste.isPlaying()){
+perdiste.amp(.3);
 perdiste.play();
+estoyVerde.pause();
  timeLeft = 3000;
 
 }
@@ -511,7 +519,9 @@ println(contador);
 if (contador == 1){
   timeLeft = 3000;
       if (!ganaste.isPlaying()){
+ganaste.amp(.3);
 ganaste.play();
+estoyVerde.pause();
 }
 pantalla = 2;
 }
