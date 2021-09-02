@@ -9,6 +9,7 @@ FBox pileta;//creamos el borde de la pileta donde charly va a estar sentado
 FBox botella;
 FBox Charly;
 FBox Brazo;
+FBox periodista;
 FCircle Mano;
 
 float espera;
@@ -47,6 +48,9 @@ float DampingB;
 int friccionL;
 int densidadL;
 float DampingL;
+
+int posXp = 100;
+int posYp = 100;
 
 PImage lata;
 
@@ -101,6 +105,7 @@ mundo = new FWorld(); //creo el mundo
 mundo.setEdges();//crea unos bordes para que los elementos no se escapen del mundo
 //los bordes no se ven porque para actualizarse necesira llamar
 //a dos metodos en el draw
+
  agua = loadImage("agua.png");
  
  dinosaurioInflable = loadImage("dinosaurioInflable.png");
@@ -130,7 +135,7 @@ ganaste = new SoundFile(this,"ganar.wav");
 lata = loadImage("lata.png");
 
 caja = new FBox(ancho,alto);
-caja.setPosition(0+ancho*3,height-alto);
+caja.setPosition(100,200);
 //que la incialice aca no significa que se dibuje porque no
 //agrege la caja al mundo 
 mundo.add(caja);
@@ -156,15 +161,13 @@ pileta.attachImage(bordePileta);
 pileta.setStatic(true); //se queda dura pero se sigue moviendo si le hago click
 //como hago para que no pueda moverse al objeto con el mouse?
 pileta.setGrabbable(false);
-
-
 /* botella */
 
 botellaCoca = loadImage("botella.png");
 
 botella = new FBox(ancho,altoBotella);
 botella.setName("botellaCoca");
-botella.setPosition(0+ancho*3.5,height-altoBotella);
+botella.setPosition(200,200);
 //que la incialice aca no significa que se dibuje porque no
 //agrege la caja al mundo 
 mundo.add(botella);
@@ -172,6 +175,12 @@ botella.attachImage(botellaCoca);
 botella.setRestitution(0.1);
 botella.setFriction(6);
 botella.setDensity(6);
+/* Periodista */
+
+periodista = new FBox(100,100);
+periodista.setName("periodista");
+periodista.setPosition(posXp,height-posYp);
+mundo.add(periodista);
 
 /*Charly*/
 
@@ -330,13 +339,11 @@ Flecha= loadImage("flecha.png");
 void draw(){
  // println("X: " + mouseX + " Y:" + mouseY);
 // println(startTime);
-  
-  
     
   if(pantalla == 0){
     
      image(Inicio,0,0);
-     
+     restart();
        
      if(mouseX>870 && mouseX<929 && mouseY>468 && mouseY<523){
             
@@ -354,7 +361,6 @@ void draw(){
   }else if(pantalla==1){
     
   image(Fondo,0,0);
-    
   //image(agua,0,0);
   
   mundo.step();//hace los calculos matematicos en los cuerpos que interactuan en 
@@ -532,18 +538,34 @@ FBody coca = null;
 
 
 }
-
+void restart(){
+  periodista.setPosition(100,height-100);
+  caja.setPosition(100,200);
+  botella.setPosition(200,200);
+  for (int i=0; i<dinosaurios.length; i++) {
+    dinosaurios[i].setPosition(width/2 + (i*4), puenteY-100);
+  }
+}
 
 
 void keyPressed(){
  
   
   if(pantalla==1){
-   if (millis() - espera >= 1000){
+    
+  if(keyCode == RIGHT){
+periodista.adjustPosition(15,0);
+}  
+    if(keyCode == LEFT){
+periodista.adjustPosition(-15,0);
+}  
+    
+    
+   if (millis() - espera >= 500){
     // println(contador);
    if(key == ENTER)
-      botella.addImpulse(5000,-10000);
-    caja.addImpulse(3000,-10000);
+     // botella.addImpulse(5000,-10000);
+    periodista.addImpulse(3000,-25000);
     espera = 0;
     espera = millis();
 
