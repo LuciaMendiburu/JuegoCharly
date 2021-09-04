@@ -9,7 +9,7 @@ FBox pileta;//creamos el borde de la pileta donde charly va a estar sentado
 FBox botella;
 FBox Charly;
 FBox Brazo;
-FBox periodista;
+FCircle periodista;
 FCircle Mano;
 
 float espera;
@@ -72,6 +72,8 @@ PImage Perdiste;
 PImage Ganaste;
 PImage Boton;
 PImage Flecha;
+PImage Pelota;
+
 
 
 /*-----------------------elementos cadena agua-------------------------------------*/
@@ -178,8 +180,9 @@ botella.setRestitution(0.1);
 botella.setFriction(6);
 botella.setDensity(6);
 /* Periodista */
-
-periodista = new FBox(100,100);
+Pelota = loadImage("pelota.png");
+periodista = new FCircle(100);
+periodista.attachImage(Pelota);
 periodista.setName("periodista");
 periodista.setPosition(posXp,height-posYp);
 mundo.add(periodista);
@@ -347,8 +350,8 @@ void draw(){
      restart();
      
      if (!estoyVerde.isPlaying()){
-estoyVerde.amp(.5);
-estoyVerde.play();
+//estoyVerde.amp(0.5);
+//estoyVerde.play();
      }       
      if(mouseX>870 && mouseX<929 && mouseY>468 && mouseY<523){
             
@@ -364,7 +367,7 @@ estoyVerde.play();
     
     
   }else if(pantalla==1){
-    
+   Fondo.resize(1000,600);
   image(Fondo,0,0);
   //image(agua,0,0);
   
@@ -632,5 +635,3 @@ periodista.adjustPosition(-15,0);
  
  
  }
-
- 
