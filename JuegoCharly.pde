@@ -69,6 +69,8 @@ PImage lata, bordePileta, botellaCoca, Charlyimg,
 float velocidad_agua = 0.2; //Velocidad gif
 float velocidad_charly = 0.1; //Velocidad gif
 
+float transparencia;
+
 
 //---------CAMARA---------//
 float amortiguacion = 0.9;
@@ -395,7 +397,7 @@ void draw() {
   if (pantalla == 0) {
     background(164, 65, 195);
     image(Inicio, 0, 0);
-    rectMode(CENTER);
+    rectMode(CENTER); //ESTE SORETE ERA EL DEL BUG DIOS, la solucion fue clavarle un corner mode en la pantalla siguiente
     fill(255);
     rect(width/2, height-200, 500, 50);
     fill(80, 196, 55, color_de_carga);
@@ -430,10 +432,21 @@ void draw() {
     textAlign(CENTER);
 
     //     text("Pulsa s para iniciar", width/2, 50);
+    
+    
   } else if (pantalla==1) {
+  
+    rectMode(CORNER);
+    
     // Fondo.resize(1000, 800);
     image(Fondo, 0, 0);
-
+    
+    //cambio color fondo
+    
+     fill(0,108,255,transparencia);
+    rect(0,0,1000,800);
+     transparencia = map(tiempo, 30, 0, 89.25, 0);
+  
     //image(agua,0,0);
 
     mundo.step();//hace los calculos matematicos en los cuerpos que interactuan en 
@@ -454,14 +467,14 @@ void draw() {
     //ellipse(50,50,50,50);
     textSize(25);
 
-
+/*
     if (tiempo>20 ) { //Texto titilando
       fill (255);
     } else if (tiempo<20 && tiempo%2==0) {
       fill (255, 0, 0);
     }
 
-
+*/
     tiempo= round(timeLeft/100);
     text("Tiempo: "+tiempo, 100, 50);
 
